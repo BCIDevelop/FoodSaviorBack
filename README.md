@@ -1,6 +1,11 @@
-# Boilerplate Flask
+# Food Savior README
 
 ---
+## Seeders
+
+1. Categories
+2. Roles
+3. Users
 
 ## Modulos
 
