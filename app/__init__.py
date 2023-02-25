@@ -23,9 +23,9 @@ authorizations = {
 
 api = Api(
     app,
-    title='Boilerplate Flask',
+    title='Food Savior Back',
     version='0.1',
-    description='Endpoints del boilerplate',
+    description='Endpoints de FoodSavior',
     authorizations=authorizations,
     doc='/swagger-ui'
 )

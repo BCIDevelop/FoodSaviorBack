@@ -14,7 +14,7 @@ class UserController:
         try:
             page = query['page']
             per_page = query['per_page']
-
+        
             records = self.model.where(status=True).order_by('id').paginate(
                 page=page, per_page=per_page
             )

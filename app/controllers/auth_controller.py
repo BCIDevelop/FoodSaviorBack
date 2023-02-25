@@ -16,22 +16,26 @@ class AuthController:
             username = data['username']
             password = data['password']
 
-            # 1ª Validar que el usuario exista y no este inhabilitado
-            record = self.model.where(username=username, status=True).first()
+            # 1ª Validar que el usuario exista
+            record = self.model.where(username=username).first()
             if record:
-                # 2ª Validar que la contraseña sea correcta
-                if record.checkPassword(password):
-                    # 3º Creación de JWT (Access Token y Refresh Token)
-                    user_id = record.id
-                    access_token = create_access_token(identity=user_id)
-                    refresh_token = create_refresh_token(identity=user_id)
-                    return {
-                        'access_token': access_token,
-                        'refresh_token': refresh_token
-                    }, 200
+                if record.status:
+                    # 2ª Validar que la contraseña sea correcta
+                    if record.checkPassword(password):
+                        # 3º Creación de JWT (Access Token y Refresh Token)
+                        user_id = record.id
+                        access_token = create_access_token(identity=user_id)
+                        refresh_token = create_refresh_token(identity=user_id)
+                        return {
+                            'access_token': access_token,
+                            'refresh_token': refresh_token
+                        }, 200
+                    else:
+                        raise Exception('La contraseña es incorrecta')
                 else:
-                    raise Exception('La contraseña es incorrecta')
-
+                    if record.token:
+                        return {"message":"Por favor confirma tu cuenta","status":1},403
+                    return {"message":"Tu cuenta ha sido inhabilitada por favor comunicate con nostros","status":0},403
             raise Exception('No se encontro el usuario')
         except Exception as e:
             return {
@@ -43,8 +47,15 @@ class AuthController:
         try:
             # Ingresar o insertar el rol_id
             data['rol_id'] = self.rol_id
+            email=data["email"]
+            name=data["name"]
+            token=token_hex(5)
+            data['token']=token   
             new_record = self.model.create(**data)
             new_record.hashPassword()
+            self.mailing.emailConfirmAccount(
+                    email,name,token
+            )
             db.session.add(new_record)
             db.session.commit()
 
@@ -93,6 +104,30 @@ class AuthController:
             }, 404
         except Exception as e:
             db.session.rollback()
+            return {
+                'message': 'Ocurrio un error',
+                'error': str(e)
+            }, 500
+
+    def claimAccount(self,query):
+        try:
+            email=query["email"]
+            token=query["token"]
+            print(query)
+            record=self.model.where(email=email).first()
+            if not record:
+                return {"message":"Usuario no registrado"},404
+            if record.status==True:
+                return {"message":"Usuario ya esta activo"},400
+            if record.token!=token:
+                return {"message":"token no valido"},400
+            record.update(status=True,token=None)
+            db.session.add(record)
+            db.session.commit()
+            return {},204
+        except Exception as e:
+            db.session.rollback()
+            
             return {
                 'message': 'Ocurrio un error',
                 'error': str(e)

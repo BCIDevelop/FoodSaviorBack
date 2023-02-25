@@ -14,17 +14,17 @@ class CategoriesRequestSchema:
         return parser
 
     def create(self):
-        return self.namespace.model('Categoriy create',{
+        return self.namespace.model('Category create',{
             'name': fields.String(required=True,max_length=120)
         })
     def update(self):
-        return self.namespace.model('Categoriy update',{
+        return self.namespace.model('Category update',{
             "name": fields.String(required=True,max_length=120)
         })     
 
  
 
-class CategoriyResponseSchema(SQLAlchemyAutoSchema):
+class CategoryResponseSchema(SQLAlchemyAutoSchema):
     class Meta:
         model=CategoryModel
         ordered=True

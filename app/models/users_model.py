@@ -14,11 +14,11 @@ class UserModel(BaseModel):
     password = Column(String(120), nullable=False)
     email = Column(String(140), unique=True)
     rol_id = Column(Integer, ForeignKey('roles.id'))
-    status = Column(Boolean, default=True)
-
+    status = Column(Boolean, default=False)
+    token=Column(String(20),nullable=True)
     role = relationship('RoleModel', uselist=False, back_populates='users')
     favorites=relationship('FavoriteModel',uselist=True,back_populates='user')
-
+    products=relationship('ProductModel',uselist=True,back_populates='user')
 
     def hashPassword(self):
         pwd_encode = self.password.encode('utf-8')

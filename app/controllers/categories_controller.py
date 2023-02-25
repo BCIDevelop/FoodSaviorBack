@@ -1,12 +1,12 @@
 
 from app.models.categories_model import CategoryModel
 from app import db
-from app.schemas.categories_schemas import CategoriyResponseSchema
+from app.schemas.categories_schemas import CategoryResponseSchema
 
 class CategoriesController:
     def __init__(self) -> None:
         self.model=CategoryModel
-        self.schema=CategoriyResponseSchema
+        self.schema=CategoryResponseSchema
     def all(self,query):
         try:
 
@@ -67,6 +67,7 @@ class CategoriesController:
         try:
             record = self.model.where(id=id).first()
             if record:
+                
                 record.update(**data)
                 db.session.add(record)
                 db.session.commit()

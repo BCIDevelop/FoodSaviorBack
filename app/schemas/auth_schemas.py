@@ -33,3 +33,8 @@ class AuthRequestSchema:
         return self.namespace.model('Auth Reset Password', {
             'email': fields.String(required=True)
         })
+    def claimAccount(self):
+        parser=RequestParser()
+        parser.add_argument('email', type=str,  location='args')
+        parser.add_argument('token', type=str, location='args')
+        return parser
