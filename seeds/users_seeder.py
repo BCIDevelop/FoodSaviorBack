@@ -10,7 +10,8 @@ class UserAdminSeeder(Seeder):
                 'username':'admin',
                 'password':'123456',
                 'email':'administrador@gmail.com',
-                'rol_id':1
+                'rol_id':1,
+                'status': True
              },
              {
                'name':'Luis',
@@ -18,7 +19,17 @@ class UserAdminSeeder(Seeder):
                 'username':'luislopez',
                 'password':'123456',
                 'email':'luis.lopez@utec.edu.pe',
-                'rol_id':2
+                'rol_id':2,
+                'status': True
+             },
+             {
+               'name':'Brayan',
+               'last_name':'Jhonn',
+                'username':'bacuna',
+                'password':'123456',
+                'email':'bj27kn@gmail.com',
+                'rol_id':2,
+                'status': True
              }
         ]
 
