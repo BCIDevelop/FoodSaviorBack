@@ -5,14 +5,16 @@ from app.utils.bucket import Bucket
 from flask_jwt_extended import current_user
 from datetime import datetime
 from sqlalchemy import or_
+from os import getenv
 class ProductController:
     def __init__(self) -> None:
         self.model=ProductModel
         self.schema=ProductResponseSchema
+        self.bucket_folder = "products"
         self.__validUnits=['KG','UNI']
-        self.bucket=Bucket('food-savior','products')
+        self.bucket=Bucket( getenv('AWS_BUCKET_NAME'), self.bucket_folder)
         self.user=current_user.id
-        self.__allowed_extensions=['png','jpg']
+        self.__allowed_extensions=['png','jpg','jpeg','gif']
         self.now=datetime.now()
         
     def all(self,query):
