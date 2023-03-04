@@ -1,6 +1,7 @@
 from os import getenv
 from boto3 import client
 
+
 class Bucket:
     def __init__(self,name,folder) -> None:
         self.name=name
@@ -15,7 +16,7 @@ class Bucket:
             aws_access_key_id=self.access_id,
             aws_secret_access_key=self.access_secret
         )
-        self.__url=f'https://{self.name}.s3.{self.region}.amazon.com'
+        self.__url=f'https://{self.name}.s3.{self.region}.amazonaws.com'
 
         
     def uploadObject(self,filename,stream):

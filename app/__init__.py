@@ -11,7 +11,7 @@ from config import environment
 
 app = Flask(__name__)
 app.config.from_object(environment[getenv('ENVIRONMENT')])
-CORS(app)
+CORS(app,supports_credentials=True)
 
 authorizations = {
     'Bearer': {

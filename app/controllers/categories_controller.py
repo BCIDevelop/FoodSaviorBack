@@ -4,7 +4,7 @@ from app import db
 from app.schemas.categories_schemas import CategoryResponseSchema
 
 class CategoriesController:
-    def __init__(self) -> None:
+    def __init__(self):
         self.model=CategoryModel
         self.schema=CategoryResponseSchema
     def all(self,query):

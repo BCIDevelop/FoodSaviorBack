@@ -17,5 +17,5 @@ class ProductModel(BaseModel):
     barcode=Column(String(20))
     created_at=Column(DateTime)
     category= relationship('CategoryModel',uselist=False,back_populates='products')
-    favorite= relationship('FavoriteModel',uselist=False,back_populates='product')
+    favorite= relationship('FavoriteModel',cascade="all,delete", uselist=False, back_populates='product')
     user= relationship('UserModel',uselist=False,back_populates='products')

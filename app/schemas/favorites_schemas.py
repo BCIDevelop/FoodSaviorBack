@@ -8,10 +8,13 @@ class FavoriteRequestSchema:
         self.namespace=namespace
 
     def change(self):
-         return self.namespace.model('Favorite Create', {
+         return self.namespace.model('Favorite Change', {
             'product_id': fields.Integer(required=True)
         })
-
+    def changeBulk(self):
+         return self.namespace.model('Favorite Change Bulk', {
+            'products': fields.List((fields.Integer),required=True)
+        })
 class FavoriteResponseSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = FavoriteModel

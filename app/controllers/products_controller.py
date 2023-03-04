@@ -214,7 +214,7 @@ class ProductController:
 
     def __addSugar(self,name):
         file_name_array=name.split('.')
-        string_sugar=f'{self.now.strftime("%m-%d-%YT%H:%M:%S")}.'
+        string_sugar=f'{self.now.strftime("%m-%d-%YT%H%M%S")}.'
         file_name_array.insert(1,string_sugar)
         file_name=''.join(file_name_array)
         return f'{self.user}/{file_name}'

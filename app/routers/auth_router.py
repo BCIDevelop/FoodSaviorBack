@@ -20,6 +20,7 @@ class SignIn(Resource):
     @auth_ns.expect(request_schema.signin(), validate=True)
     def post(self):
         ''' Login de usuario '''
+        print(request.json)
         controller = AuthController()
         return controller.signIn(request.json)
 

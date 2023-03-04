@@ -12,6 +12,7 @@ class FavoriteController:
     def change(self,data):
         try:
             product_id=data["product_id"]
+
             record=self.product_model.where(id=product_id,user_id=self.user).first()
             if not record:
                 return {"message": f'El producto {product_id} no existe para tu usuario'},404
@@ -36,21 +37,25 @@ class FavoriteController:
                     'error': str(e)
             }, 500
 
-    """ def deleteById(self,id):
+    def changeBulk(self,body):
         try:
-            
-            record=self.model.where(id=id).first()
-            if not record:
-                return {"message":'Favorite record not found'},404
-            record.delete()
+            products=body["products"]
+            records=self.product_model.where(id__in=products,user_id=self.user).all()
+            if not records or (len(records) != len(products)):
+                return {"message":"Ingrese correctamente sus productos"},404
+            records_favorite=self.model.where(product_id__in=products).all()
+            if not records_favorite:
+                return {"message":"Ingrese correctamente sus favoritos"},404
+            for record in records_favorite :
+                record.delete()
             db.session.commit()
             return {},204
         except Exception as e:
-            db.session.rollback()
-            return {
+           db.session.rollback()
+           return {
                     'message': 'Ocurrio un error',
                     'error': str(e)
-            }, 500 """
+            }, 500        
     def all(self):
         try:
             

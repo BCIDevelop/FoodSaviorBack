@@ -68,7 +68,7 @@ FLASK_RUN_HOST=127.0.0.1
 FLASK_RUN_PORT=5000
 ENVIRONMENT='development'
 
-DATABASE_URL='postgresql://postgres:mysql@localhost:5432/flask_boilerplate'
+DATABASE_URL='postgresql://postgres:mysql@localhost:5432/foodsavior'
 
 JWT_SECRET='tecsup'
 
@@ -118,4 +118,8 @@ flask db migrate -m "Comentario"
 
 ```sh
 flask db upgrade
+```
+- Ejecutar los seeders para poblar la BD
+```sh
+flask seed run
 ```

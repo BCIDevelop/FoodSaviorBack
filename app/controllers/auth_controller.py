@@ -13,15 +13,16 @@ class AuthController:
 
     def signIn(self, data):
         try:
-            username = data['username']
+            email = data['email']
             password = data['password']
-
             # 1ª Validar que el usuario exista
-            record = self.model.where(username=username).first()
+            record = self.model.where(email=email).first()
             if record:
                 if record.status:
                     # 2ª Validar que la contraseña sea correcta
+                   
                     if record.checkPassword(password):
+
                         # 3º Creación de JWT (Access Token y Refresh Token)
                         user_id = record.id
                         access_token = create_access_token(identity=user_id)
@@ -31,12 +32,14 @@ class AuthController:
                             'refresh_token': refresh_token
                         }, 200
                     else:
-                        raise Exception('La contraseña es incorrecta')
+                        return {"message":"Contraseña incorrecta"},400
                 else:
                     if record.token:
                         return {"message":"Por favor confirma tu cuenta","status":1},403
                     return {"message":"Tu cuenta ha sido inhabilitada por favor comunicate con nostros","status":0},403
-            raise Exception('No se encontro el usuario')
+            return {
+                "message":"No se encontro el ususario"
+            },404
         except Exception as e:
             return {
                 'message': 'Ocurrio un error',
@@ -113,7 +116,7 @@ class AuthController:
         try:
             email=query["email"]
             token=query["token"]
-            print(query)
+           
             record=self.model.where(email=email).first()
             if not record:
                 return {"message":"Usuario no registrado"},404

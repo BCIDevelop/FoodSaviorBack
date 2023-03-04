@@ -16,19 +16,22 @@ class Favorites(Resource):
     @jwt_required()
     @favorites_ns.expect(request_schema.change(), validate=True)
     def post(self):
-        """ Modifica el registro de favorito del producto """
+        """ Modifica el registro de favorito de un producto """
         controller=FavoriteController()
         return controller.change(request.json)
-
+    
     @jwt_required() 
     def get(self):
         """ Listar todos los favoritos de un usuario """   
         controller=FavoriteController()
         return controller.all() 
-""" @favorites_ns.route('/<int:id>')
+@favorites_ns.route('/bulk')
 @favorites_ns.doc(security='Bearer')
-class FavoritesById(Resource):
+class FavoritesBulk(Resource):
     @jwt_required()
-    def delete(self,id):
+    @favorites_ns.expect(request_schema.changeBulk(), validate=True)
+    def delete(self):
+        """ Modifica el registro de favorito de varios productos """
+        
         controller=FavoriteController()
-        return controller.deleteById(id)  """
+        return controller.changeBulk(request.json)
