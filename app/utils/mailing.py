@@ -7,7 +7,7 @@ from flask import render_template
 class Mailing:
     def __init__(self):
         self.sender = ('Flask Boilerplate', getenv('MAIL_USERNAME'))
-        
+        self.url='http://127.0.0.1:5173'
     def emailResetPassword(self, recipient, name, password):
         html = render_template(
             'reset_password.html',
@@ -24,7 +24,8 @@ class Mailing:
             'confirm_account.html',
             name=name,
             token=token,
-            email=recipient
+            email=recipient,
+            url=self.url
         )
         return self.__sendEmail(
             f'Confirma tu cuenta - {name}',

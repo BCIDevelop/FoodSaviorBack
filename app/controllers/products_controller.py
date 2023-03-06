@@ -169,6 +169,7 @@ class ProductController:
             }, 500
 
     def createByUser(self,form):
+        print(form)
         try:
             unit=form['unit']
             image=form['image']

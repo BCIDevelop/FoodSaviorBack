@@ -114,6 +114,7 @@ class AuthController:
 
     def claimAccount(self,query):
         try:
+            print("claim account entro")
             email=query["email"]
             token=query["token"]
            

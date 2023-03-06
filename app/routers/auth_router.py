@@ -55,7 +55,7 @@ class ResetPassword(Resource):
 @auth_ns.route('/claim-account')
 class ClaimAccount(Resource):
     @auth_ns.expect(request_schema.claimAccount(), validate=True)
-    def get(self):
+    def post(self):
         ''' Verificar el correo electronico'''
         query = request_schema.claimAccount().parse_args()
         controller = AuthController()
