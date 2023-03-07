@@ -44,16 +44,17 @@ class ProfileController:
 
     def update(self,form):
         try:
+            print(form)
             password=form.get("password")
-            new_password=form.get("new_password")
+            confirm_password=form.get("confirm_password")
             print(form)
             image=form.get("avatar")
             username=form.get("username")
             record=self.model.where(id=self.user).first()
             
             if password: 
-                if password == new_password: 
-                    form.pop("new_password")
+                if password == confirm_password: 
+                    form.pop("confirm_password")
                 else:
                     return {"message": "Password doesnt match"},400
 

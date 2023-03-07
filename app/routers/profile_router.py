@@ -23,6 +23,7 @@ class Profile(Resource):
     def patch(self):
         """ Actualizacion parcial del usuario """
         form=request_schema.update().parse_args()
+        print(form)
         data = {key: value for key, value in form.items() if value is not None}
         controller=ProfileController()
         return controller.update(data)

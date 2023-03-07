@@ -14,7 +14,7 @@ class ProfileRequestSchema:
         parser.add_argument('last_name',type=str,required=False,location='form')
         parser.add_argument('name',type=str,required=False,location='form')
         parser.add_argument('password',type=str,required=False,location="form")
-        parser.add_argument('new_password',type=str,required=False,location="form")
+        parser.add_argument('confirm_password',type=str,required=False,location="form")
 
         return parser
    
