@@ -47,7 +47,7 @@ class ProfileController:
             print(form)
             password=form.get("password")
             confirm_password=form.get("confirm_password")
-            print(form)
+           
             image=form.get("avatar")
             username=form.get("username")
             record=self.model.where(id=self.user).first()

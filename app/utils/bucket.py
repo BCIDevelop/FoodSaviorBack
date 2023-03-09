@@ -16,7 +16,7 @@ class Bucket:
             aws_access_key_id=self.access_id,
             aws_secret_access_key=self.access_secret
         )
-        self.__url=f'https://{self.name}.s3.{self.region}.amazonaws.com'
+        self.__url=f'https://{self.name}.s3.amazonaws.com'
 
         
     def uploadObject(self,filename,stream):
