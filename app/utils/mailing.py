@@ -7,7 +7,7 @@ from flask import render_template
 class Mailing:
     def __init__(self):
         self.sender = ('Flask Boilerplate', getenv('MAIL_USERNAME'))
-        self.url='http://127.0.0.1:5173'
+        self.url='https://food-savior-react.vercel.app/'
     def emailResetPassword(self, recipient, name, password):
         html = render_template(
             'reset_password.html',
