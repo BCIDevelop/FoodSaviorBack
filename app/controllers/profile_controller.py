@@ -62,7 +62,7 @@ class ProfileController:
             if image:  
                 stream=self.__validateExtensionImage(image)
                 print(f'stream ---> {stream}')
-                url=self.bucket.uploadObject(self.user,stream)
+                url=self.bucket.uploadObject(f'{self.user}.png',stream)
                 form["avatar"]=url
 
             if username and username != record.username:
