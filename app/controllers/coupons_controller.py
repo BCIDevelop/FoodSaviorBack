@@ -139,7 +139,6 @@ class CouponController:
 
     def _validateDateTimeCoupon(self,record):
         started_date=datetime.strftime(record.started_at,'%Y:%m:%d')
-        print(type(started_date))
         started_hour=datetime.strftime(record.started_at,'%H:%M:%S')
 
         ended_date=datetime.strftime(record.ended_at,'%Y:%m:%d')
@@ -158,5 +157,25 @@ class CouponController:
         response=self.schema(many=False)
 
         return response.dump(record)
-    
+    def _validateDateTimeCouponToPlan(self,record,code):
+        record=self.model.where(code=code).first()
+        if record:
+            started_date=datetime.strftime(record.started_at,'%Y:%m:%d')
+            started_hour=datetime.strftime(record.started_at,'%H:%M:%S')
+
+            ended_date=datetime.strftime(record.ended_at,'%Y:%m:%d')
+            ended_hour=datetime.strftime(record.ended_at,'%H:%M:%S')
+            #Validar las fechas
+
+            if self.datenow < started_date or self.datenow > ended_date:
+                return None
+            # Validar que estemos en la hora de inicio 
+            if self.datenow == started_date and self.hournow < started_hour:
+                return None        # Validar que estemos en la hora de antes de vencer 
+            if self.datenow == ended_date and self.hournow > ended_hour:
+                return None        
+            
+            return record.percentage
+
+        return None  
 

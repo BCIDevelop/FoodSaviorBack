@@ -1,0 +1,19 @@
+"id": 1327122027,
+  "nickname": "TEST_USER_491252658",
+  "password": "QfWuozf4oi",
+  "site_status": "active",
+  "site_id": "MPE",
+  "description": "Vendedor FoodSavior",
+  "date_created": "2023-03-09T16:17:29-04:00",
+  "date_last_updated": "2023-03-09T16:17:29-04:00"
+
+  {
+  "id": 1327149352,
+  "nickname": "TEST_USER_1665157544",
+  "password": "73E4WJ7SLF",
+  "site_status": "active",
+  "site_id": "MPE",
+  "description": "Comprador",
+  "date_created": "2023-03-09T16:19:13-04:00",
+  "date_last_updated": "2023-03-09T16:19:13-04:00"
+}

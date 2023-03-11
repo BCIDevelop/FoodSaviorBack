@@ -10,7 +10,6 @@ class OrderModel(BaseModel):
     user_id=Column(Integer,ForeignKey('users.id'))
     total_price=Column(Float(precision=2))
     subtotal_price=Column(Float(precision=2))
-    igv_price=Column(Float(precision=2))
     discount_price=Column(Float(precision=2))
     code_coupon=Column(String(50),nullable=True)
     date_create=Column(Date,default=func.now())
@@ -19,5 +18,6 @@ class OrderModel(BaseModel):
     payment_status=Column(String(255),nullable=True)
     status=Column(String,default='pending')
     plan_id=Column(Integer,ForeignKey('plans.id'))
+    subscription_id=Column(String(50))
 
     plan=relationship('PlanModel',uselist=False)

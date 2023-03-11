@@ -21,6 +21,7 @@ class Bucket:
         
     def uploadObject(self,filename,stream):
         try:
+            print('entre bucket!!!!!!!!!')
             self.client.upload_fileobj(
                 stream,self.name,f'{self.folder}/{filename}',
                 ExtraArgs={'ACL':'public-read'}

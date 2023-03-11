@@ -44,22 +44,24 @@ class ProfileController:
 
     def update(self,form):
         try:
-            print(form)
+            print(f'comienza controlador --> {form}')
             password=form.get("password")
             confirm_password=form.get("confirm_password")
-           
+            print(password)
             image=form.get("avatar")
             username=form.get("username")
             record=self.model.where(id=self.user).first()
             
             if password: 
                 if password == confirm_password: 
+                    
                     form.pop("confirm_password")
                 else:
                     return {"message": "Password doesnt match"},400
 
-            if image:
+            if image:  
                 stream=self.__validateExtensionImage(image)
+                print(f'stream ---> {stream}')
                 url=self.bucket.uploadObject(self.user,stream)
                 form["avatar"]=url
 
@@ -67,9 +69,10 @@ class ProfileController:
                 username_record=self.model.where(username=username).first()
                 if username_record:
                     return {"message":"Username already exist"},400
-            
+            print(f'termina controlador --> {form}')
             record.update(**form)
-            record.hashPassword()
+            if password:
+                record.hashPassword()
             db.session.add(record)
             db.session.commit()
             return {
