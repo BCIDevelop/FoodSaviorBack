@@ -38,3 +38,8 @@ class AuthRequestSchema:
         parser.add_argument('email', type=str,  location='args')
         parser.add_argument('token', type=str, location='args')
         return parser
+    
+    def fbLogin(self):
+        return self.namespace.model('Auth FB Login', {
+            'access_token': fields.String(required=True),
+        })

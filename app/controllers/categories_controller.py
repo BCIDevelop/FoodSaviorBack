@@ -8,6 +8,7 @@ class CategoriesController:
         self.model=CategoryModel
         self.schema=CategoryResponseSchema
     def all(self,query):
+        
         try:
 
             page=query['page']
@@ -35,10 +36,10 @@ class CategoriesController:
 
     def getById(self,id):
         try:
-           record=self.model.where(id=id).first()
+           record=self.model.where(id=id).first() #query ---Objeto no se puede enviar por el protocolo HTTP
            if record:
-                response=self.schema(many=False)
-                return response.dump(record),200
+                response=self.schema(many=False) # intacias el serializador 
+                return response.dump(record),200 # usar el serializador en el objeto para convertirlo {}
                 
            return {
                 'message':'No se encuntra la categoria mencionado'
