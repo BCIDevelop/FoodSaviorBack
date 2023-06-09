@@ -20,6 +20,7 @@ class UserModel(BaseModel):
     role = relationship('RoleModel', uselist=False, back_populates='users')
     favorites=relationship('FavoriteModel',uselist=True,back_populates='user')
     products=relationship('ProductModel',uselist=True,back_populates='user')
+    fb_id=Column(String(20),nullable=True)
 
     def hashPassword(self):
         pwd_encode = self.password.encode('utf-8')

@@ -7,6 +7,7 @@ from marshmallow.fields import Nested
 class ProductRequestSchema:
     def __init__(self,namespace) -> None:
         self.namespace=namespace
+    
 
     def all(self):
         parser= RequestParser()

@@ -29,3 +29,4 @@ class PlanResponseSchema(SQLAlchemyAutoSchema):
     class Meta:
         ordered=True
         model=PlanModel
+    

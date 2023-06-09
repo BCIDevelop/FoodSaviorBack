@@ -60,3 +60,10 @@ class ClaimAccount(Resource):
         query = request_schema.claimAccount().parse_args()
         controller = AuthController()
         return controller.claimAccount(query)
+@auth_ns.route('/fb-login')
+class FBSignIn(Resource):
+    @auth_ns.expect(request_schema.fbLogin(), validate=True)
+    def post(self):
+        ''' Autenticacion Usuario FB '''
+        controller = AuthController()
+        return controller.fbLogin(request.json)

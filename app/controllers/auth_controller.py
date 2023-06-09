@@ -3,13 +3,14 @@ from app.models.users_model import UserModel
 from flask_jwt_extended import create_access_token, create_refresh_token
 from secrets import token_hex
 from app.utils.mailing import Mailing
-
+from app.utils.facebook import Facebook
 
 class AuthController:
     def __init__(self):
         self.model = UserModel
         self.rol_id = 2
         self.mailing = Mailing()
+        self.facebook= Facebook
 
     def signIn(self, data):
         try:
@@ -114,7 +115,6 @@ class AuthController:
 
     def claimAccount(self,query):
         try:
-            print("claim account entro")
             email=query["email"]
             token=query["token"]
            
@@ -132,6 +132,59 @@ class AuthController:
         except Exception as e:
             db.session.rollback()
             
+            return {
+                'message': 'Ocurrio un error',
+                'error': str(e)
+            }, 500
+
+    def fbLogin(self,data):
+        try:
+            access_token=data['access_token']
+            fb = Facebook(access_token)
+            if fb.debugToken() :
+                user=fb.getUserInformation()
+                email = user['email']
+                fb_id = user['id']
+                name = user['name']
+                user_data={}
+                user_data['fb_id']=fb_id
+                user_data['email']=email
+                user_data['status']=True
+                user_data['rol_id']=2
+                user_data['password']=''
+                user_data['name']=name
+                record= self.model.where(email=email).first()
+                if not record :
+                    new_record = self.model.create(**user_data)
+                    db.session.add(new_record)
+                    db.session.commit()
+                    user_id = new_record.id
+                    access_token = create_access_token(identity=user_id)
+                    refresh_token = create_refresh_token(identity=user_id)
+                    
+                else:
+                    user_id = record.id
+                    access_token = create_access_token(identity=user_id)
+                    refresh_token = create_refresh_token(identity=user_id)
+                    if not record.fb_id:
+                        record.update(fb_id=fb_id)
+                        db.session.add(record)
+                        db.session.commit()
+                       
+                return {
+                        'access_token': access_token,
+                        'refresh_token': refresh_token
+                    }, 200        
+            else:
+                return {
+                'message': 'Token no valido'
+            }, 400
+
+                    
+            
+
+        except Exception as e:
+            db.session.rollback()
             return {
                 'message': 'Ocurrio un error',
                 'error': str(e)
