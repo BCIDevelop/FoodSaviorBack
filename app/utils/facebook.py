@@ -13,7 +13,7 @@ class Facebook:
         return response.json()['data']['is_valid']
     
     def getUserInformation(self):
-        url=f'{self.base_url}/me?fields=id,name,email&access_token={self.access_token}'
+        url=f'{self.base_url}/me?fields=id,name,email,picture&access_token={self.access_token}'
         response=get(url)
         return response.json()
     

@@ -146,6 +146,7 @@ class AuthController:
                 email = user['email']
                 fb_id = user['id']
                 name = user['name']
+                avatar = user["picture"]["url"]
                 user_data={}
                 user_data['fb_id']=fb_id
                 user_data['email']=email
@@ -153,6 +154,7 @@ class AuthController:
                 user_data['rol_id']=2
                 user_data['password']=''
                 user_data['name']=name
+                user_data['avatar']=avatar
                 record= self.model.where(email=email).first()
                 if not record :
                     new_record = self.model.create(**user_data)
