@@ -67,3 +67,10 @@ class FBSignIn(Resource):
         ''' Autenticacion Usuario FB '''
         controller = AuthController()
         return controller.fbLogin(request.json)
+@auth_ns.route('/gmail-login')
+class GmailSignIn(Resource):
+    @auth_ns.expect(request_schema.gmailLogin(), validate=True)
+    def post(self):
+        ''' Autenticacion Usuario Gmail '''
+        controller = AuthController()
+        return controller.gmailLogin(request.json)    

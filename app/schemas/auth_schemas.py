@@ -43,3 +43,7 @@ class AuthRequestSchema:
         return self.namespace.model('Auth FB Login', {
             'access_token': fields.String(required=True),
         })
+    def gmailLogin(self):
+        return self.namespace.model('Auth Gmail Login', {
+            'credential': fields.String(required=True),
+        })

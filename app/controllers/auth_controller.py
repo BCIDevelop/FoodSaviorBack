@@ -4,14 +4,16 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 from secrets import token_hex
 from app.utils.mailing import Mailing
 from app.utils.facebook import Facebook
-
+from google.auth.transport import requests
+from google.oauth2 import id_token
+from os import getenv
 class AuthController:
     def __init__(self):
         self.model = UserModel
         self.rol_id = 2
         self.mailing = Mailing()
         self.facebook= Facebook
-
+        
     def signIn(self, data):
         try:
             email = data['email']
@@ -146,7 +148,7 @@ class AuthController:
                 email = user['email']
                 fb_id = user['id']
                 name = user['name']
-                avatar = user["picture"]["url"]
+                avatar = user["picture"]['data']["url"]
                 user_data={}
                 user_data['fb_id']=fb_id
                 user_data['email']=email
@@ -180,14 +182,57 @@ class AuthController:
             else:
                 return {
                 'message': 'Token no valido'
-            }, 400
-
-                    
-            
-
+            }, 400             
         except Exception as e:
             db.session.rollback()
             return {
                 'message': 'Ocurrio un error',
                 'error': str(e)
             }, 500
+    def  gmailLogin(self,data):
+        try:
+            token=data['credential']
+            idinfo = id_token.verify_oauth2_token(token, requests.Request(), getenv('GOOGLE_CLIENT_ID'))
+           
+            userid = idinfo['sub']
+            print(userid)
+            email= idinfo['email']
+            user_data={}
+            user_data['gmail_id']=userid
+            user_data['email']=email
+            user_data['name']=idinfo['given_name']
+            user_data['last_name']=idinfo['family_name']
+            user_data['avatar']=idinfo['picture']
+            user_data['status']=True
+            user_data['rol_id']=2
+            user_data['password']=''
+            record= self.model.where(email=email).first()
+            if not record:
+                new_record = self.model.create(**user_data)
+                db.session.add(new_record)
+                db.session.commit()
+                user_id = new_record.id
+                access_token = create_access_token(identity=user_id)
+                refresh_token = create_refresh_token(identity=user_id)
+
+            else:
+                    user_id = record.id
+                    access_token = create_access_token(identity=user_id)
+                    refresh_token = create_refresh_token(identity=user_id)
+                    if not record.gmail_id:
+                        record.update(gmail_id=userid)
+                        db.session.add(record)
+                        db.session.commit()
+                       
+            return {
+                    'access_token': access_token,
+                    'refresh_token': refresh_token
+                    }, 200      
+
+        except Exception as e:
+            db.session.rollback()
+            return {
+                'message': 'Ocurrio un error',
+                'error': str(e)
+            }, 500    
+     

@@ -16,11 +16,12 @@ class UserModel(BaseModel):
     rol_id = Column(Integer, ForeignKey('roles.id'))
     status = Column(Boolean, default=False)
     token=Column(String(20),nullable=True)
-    avatar=Column(String(80),nullable=True)
+    avatar=Column(String(140),nullable=True)
     role = relationship('RoleModel', uselist=False, back_populates='users')
     favorites=relationship('FavoriteModel',uselist=True,back_populates='user')
     products=relationship('ProductModel',uselist=True,back_populates='user')
     fb_id=Column(String(20),nullable=True)
+    gmail_id=Column(String(25),nullable=True)
 
     def hashPassword(self):
         pwd_encode = self.password.encode('utf-8')
